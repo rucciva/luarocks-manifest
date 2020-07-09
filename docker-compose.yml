@@ -5,7 +5,9 @@ services:
     environment:
       CADDY_CONF: |
         :8080 
-        basicauth / username password
+        webdav /  {
+          scope /srv/luarocks/manifest
+        }
         log stdout
         errors stderr
     ports:
