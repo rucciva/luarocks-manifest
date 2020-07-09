@@ -1,0 +1,23 @@
+version: "2.4"
+services:
+  luarocks-site:
+    image: rucciva/caddy:1.0.5
+    environment:
+      CADDY_CONF: |
+        :8080 
+        basicauth / username password
+        log stdout
+        errors stderr
+    ports:
+      - 8080:8080
+    volumes:
+      - ./manifest:/srv/luarocks/manifest
+    entrypoint: /bin/sh -c
+    command: 
+      - echo "$$CADDY_CONF" | exec caddy -conf stdin
+  
+  luarocks-manifest:
+    build: .
+    image: rucciva/luarocks-manifest:0.0.1
+    volumes:
+      - ./manifest:/srv/luarocks/manifest
